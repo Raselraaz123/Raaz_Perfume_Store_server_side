@@ -8,20 +8,50 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-const users = [
-   {id:1 ,name:'Rasel',roll:33,Phone:555555555},
-   {id:2 ,name:'Roman',roll:337,Phone:55555554524355}
- ]
+
+
+
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wilqz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
+
+
+async function run() {
+  try {
+    await client.connect();
+    const perfumeCollection = client
+      .db("raaz-perfume-store")
+      .collection("perfume");
+    
+    app.get('/perfume', async (req, res) => {
+      const query = {}
+      const cursor = perfumeCollection.find(query);
+      const perfumes = await cursor.toArray();
+      res.send(perfumes)
+    })
+  }
+  finally {
+    
+  }
+}
+run().catch(console.dir);
+
+
+
+
+
+
+
 
 
 app.get('/', (req, res) => {
   res.send('perfumes server open in display')
 })
 
-app.get('/users', (req, res) => {
-  res.send(users)
-  
-})
 
 
 app.listen(port, () => {
