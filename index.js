@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.wilqz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -32,7 +32,15 @@ async function run() {
       const cursor = perfumeCollection.find(query);
       const perfumes = await cursor.toArray();
       res.send(perfumes)
-    })
+    });
+    app.get('/perfume/:id', async (req, res) => {
+      const id =req.params.id;
+      const query = { _id: ObjectId(id) };
+      const perfume = await perfumeCollection.findOne(query);
+      res.send(perfume);
+})
+
+
   }
   finally {
     
