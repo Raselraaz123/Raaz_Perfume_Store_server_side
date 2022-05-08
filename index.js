@@ -48,7 +48,7 @@ async function run() {
       const perfume = await perfumeCollection.findOne(query);
       res.send(perfume);
     });
-      app.get("/review", async (req, res) => {
+      app.get("/reviews", async (req, res) => {
         const query = {};
         const cursor = reviewCollection.find(query);
         const reviews = await cursor.toArray();
