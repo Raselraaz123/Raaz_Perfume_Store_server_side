@@ -30,6 +30,12 @@ async function run() {
       .db("raaz-perfume-store")
       .collection("perfume");
     
+    await client.connect();
+    const reviewCollection = client
+      .db("raaz-perfume-store")
+      .collection("reviews");
+    
+    
     app.get('/perfume', async (req, res) => {
       const query = {}
       const cursor = perfumeCollection.find(query);
@@ -37,11 +43,17 @@ async function run() {
       res.send(perfumes)
     });
     app.get('/perfume/:id', async (req, res) => {
-      const id =req.params.id;
+      const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const perfume = await perfumeCollection.findOne(query);
       res.send(perfume);
-})
+    });
+      app.get("/review", async (req, res) => {
+        const query = {};
+        const cursor = reviewCollection.find(query);
+        const reviews = await cursor.toArray();
+        res.send(reviews);
+      });
 
 
   }
