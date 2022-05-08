@@ -35,7 +35,8 @@ async function run() {
       .db("raaz-perfume-store")
       .collection("reviews");
     
-    
+    // perfumes api
+
     app.get('/perfume', async (req, res) => {
       const query = {}
       const cursor = perfumeCollection.find(query);
@@ -48,6 +49,9 @@ async function run() {
       const perfume = await perfumeCollection.findOne(query);
       res.send(perfume);
     });
+
+    // reviews api
+
       app.get("/reviews", async (req, res) => {
         const query = {};
         const cursor = reviewCollection.find(query);
@@ -55,6 +59,14 @@ async function run() {
         res.send(reviews);
       });
 
+    // Delete item
+
+    app.delete('/perfume/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await perfumeCollection.deleteOne(query);
+      res.send(result);
+    })
 
   }
   finally {
