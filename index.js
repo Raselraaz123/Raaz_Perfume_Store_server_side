@@ -58,7 +58,15 @@ async function run() {
         const reviews = await cursor.toArray();
         res.send(reviews);
       });
-
+ 
+    // post 
+    
+        app.post('/perfume', async (req, res) => {
+      const newService = req.body;
+      const result = await perfumeCollection.insertOne(newService);
+      res.send(result);
+    
+    
     // Delete item
 
     app.delete('/perfume/:id', async (req, res) => {
