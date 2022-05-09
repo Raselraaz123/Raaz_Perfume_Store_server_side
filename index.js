@@ -61,11 +61,11 @@ async function run() {
  
     // post 
     
-        app.post('/perfume', async (req, res) => {
+    app.post('/perfume', async (req, res) => {
       const newService = req.body;
       const result = await perfumeCollection.insertOne(newService);
       res.send(result);
-    
+    });
     
     // Delete item
 
